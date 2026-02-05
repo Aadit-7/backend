@@ -37,4 +37,28 @@ body {
   padding: 1rem;
   border-radius: 0.75rem;
   max-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+form {
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+form input {
+  outline: none;
+  height: 2rem;
+  width: 15rem;
+  padding: 0.5rem;
+}
+
+form button {
+  height: 2rem;
+  width: 10rem;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
 }
