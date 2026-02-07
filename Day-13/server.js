@@ -1,5 +1,5 @@
 const app = require("./src/app.js");
-const connectToDb = require("./src/config/database");
+const connectToDb = require("./src/config/database.js");
 
 const port = process.env.PORT;
 
