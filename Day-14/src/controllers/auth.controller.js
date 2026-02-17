@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 const userModel = require("../models/user.model");
 
 async function registerController(req, res) {
@@ -19,7 +19,7 @@ async function registerController(req, res) {
     });
   }
 
-  const hash = await bcrypt.hash(password, 10)
+  const hash = await bcrypt.hash(password, 10);
 
   const user = await userModel.create({
     username,
@@ -37,7 +37,7 @@ async function registerController(req, res) {
     { expiresIn: "1d" },
   );
 
-  res.cookie("jwt_token", token);
+  res.cookie("token", token);
 
   res.status(201).json({
     msg: "User created Successfully",
@@ -70,7 +70,7 @@ async function loginController(req, res) {
     });
   }
 
-  const passwordValid = await bcrypt.compare(password, user.password)
+  const passwordValid = await bcrypt.compare(password, user.password);
 
   if (!passwordValid) {
     return res.status(404).json({
@@ -86,7 +86,7 @@ async function loginController(req, res) {
     { expiresIn: "1d" },
   );
 
-  res.cookie("jwt_token", token);
+  res.cookie("token", token);
 
   res.status(200).json({
     msg: "Logged in successfully",
@@ -99,7 +99,7 @@ async function loginController(req, res) {
   });
 }
 
-
 module.exports = {
-    registerController, loginController
-}
+  registerController,
+  loginController,
+};
