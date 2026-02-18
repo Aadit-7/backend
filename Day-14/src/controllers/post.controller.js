@@ -13,6 +13,11 @@ async function createPostController(req, res) {
     folder: "Cohot-2-Insta-clone",
   });
 
+  // console.log(file);
+  /*
+  If there is an error like can't read the buffer then just change the image and it will works
+  */
+
   const post = await postModel.create({
     caption: req.body.caption,
     imgUrl: file.url,
