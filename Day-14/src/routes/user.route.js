@@ -16,4 +16,10 @@ userRouter.post(
   userController.unfollowController,
 );
 
+userRouter.post(
+  "/request/:username",
+  identifyUser,
+  userController.requestController,
+);
+
 module.exports = userRouter;
