@@ -8,7 +8,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 const identifyUser = require("../middlewares/auth.middleware");
 
 /*
-POST /api/  - create post
+@route POST /api/  - create post
+@desc Create a new post
+@access Private
 */
 postRouter.post(
   "/",
@@ -18,12 +20,16 @@ postRouter.post(
 );
 
 /*
-GET /api/  - create post
+@route GET /api/  - fetech all post
+@desc Fetech all post
+@access Private
 */
 postRouter.get("/", identifyUser, postController.fetechPostController);
 
 /*
-GET /api/details:postId  - create post
+@route GET /api/details/:postId  - get post details
+@desc Get post details by postId
+@access Private
 */
 postRouter.get(
   "/details/:postId",
@@ -31,10 +37,14 @@ postRouter.get(
   postController.getPostDetailsController,
 );
 
+/*
+@route POST /api/like/:postId  - like a post
+@desc Like a post by postId
+@access Private
+*/
 postRouter.post(
   "/like/:postId",
   identifyUser,
-  postController.likePostController
-
+  postController.likePostController,
 );
 module.exports = postRouter;
