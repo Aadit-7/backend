@@ -47,4 +47,13 @@ postRouter.post(
   identifyUser,
   postController.likePostController,
 );
+
+/*
+@route GET /api/feed  - get feed posts
+@desc Get feed posts for the user
+@access Private
+*/
+postRouter.get(
+  "/feed", identifyUser, postController.getFeedPostsController
+)
 module.exports = postRouter;
