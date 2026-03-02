@@ -86,7 +86,16 @@ async function loginController(req, res) {
   });
 }
 
+async function getMeController(req, res) {
+  const user = await userModel.findById(req.user.id);
+
+  res.status(200).json({
+    msg: "User fetched successfully",
+    user,
+  });
+}
 module.exports = {
   registerController,
   loginController,
+  getMeController,
 };
