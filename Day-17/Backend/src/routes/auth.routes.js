@@ -1,26 +1,25 @@
 const express = require("express");
 const authController = require("../controllers/auth.controller");
-const authMiddleware = require("../middlewares/auth.middleware");
-
+const authMiddleware = require("../middleware/auth.middleware");
 const router = express.Router();
 
 /**
- * /@route POST /v2/auth/register
+ * /@route POST /api/auth/register
  */
 router.post("/register", authController.registerController);
 
 /**
- * /@route POST /v2/auth/login
+ * /@route POST /api/auth/login
  */
 router.post("/login", authController.loginController);
 
 /**
- * /@route GET /v2/auth/get-me
+ * /@route GET /api/auth/get-me
  */
 router.get("/get-me", authMiddleware.authUser, authController.getMeController);
 
 /**
- * /@route GET /v2/auth/logout
+ * /@route GET /api/auth/logout
  */
 router.get("/logout", authController.logoutController);
 

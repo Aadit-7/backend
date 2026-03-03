@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const redis = require("../config/cashing");
 
 async function authUser(req, res, next) {
   const token = req.cookies.token;
@@ -10,6 +11,14 @@ async function authUser(req, res, next) {
   }
 
   //   console.log(token);
+
+  const isTokenBlacklisted = await redis.get(token);
+
+  if (isTokenBlacklisted) {
+    return res.status(401).json({
+      message: "Invalid token",
+    });
+  }
 
   let decoded = null;
 

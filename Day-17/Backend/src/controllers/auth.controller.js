@@ -1,7 +1,6 @@
-const userModel = require("../model/user.model");
+const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const redis = require("../config/cashe");
 
 async function registerController(req, res) {
   const { username, email, password } = req.body;
@@ -13,13 +12,13 @@ async function registerController(req, res) {
   if (isUserExists) {
     return res.status(400).json({
       msg:
-        isUserExists.emai == email
-          ? "User with this email is already exists "
-          : "User with this username is already exists",
+        isUserExists.email == email
+          ? "User with this email is already exist. Try different"
+          : "User with this username is already exist. Try different",
     });
   }
 
-  const hash = await bcrypt.hash("password", 10);
+  const hash = await bcrypt.hash(password, 10);
 
   const user = await userModel.create({
     username,
@@ -35,6 +34,8 @@ async function registerController(req, res) {
     process.env.JWT_SECRET,
     { expiresIn: "3d" },
   );
+
+  //   console.log(user);
 
   res.cookie("token", token);
 
@@ -59,15 +60,15 @@ async function loginController(req, res) {
 
   if (!user) {
     return res.status(400).json({
-      msg: "Invalid Credentials !",
+      msg: user.email == email ? "Invalid email" : "Invalid username",
     });
   }
 
-  const isPasswordValidate = bcrypt.compare(password, user.password);
+  const isPasswordValidate = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValidate) {
     return res.status(400).json({
-      msg: "Invalid Password",
+      msg: "Incorrect password",
     });
   }
 
@@ -83,16 +84,12 @@ async function loginController(req, res) {
   res.cookie("token", token);
 
   res.status(200).json({
-    msg: "User logged In successfully",
-    user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-    },
+    msg: "User logged in successfully",
   });
 }
 
 async function getMeController(req, res) {
+  console.log(req.user);
   const user = await userModel.findById(req.user.id);
 
   res.status(200).json({
@@ -101,17 +98,7 @@ async function getMeController(req, res) {
   });
 }
 
-async function logoutController(req, res) {
-  const token = req.cookies.token;
-
-  res.clearCookie("token");
-
-  await redis.set(token, Date.now().toString(), "EX", 60 * 60);
-
-  res.status(200).json({
-    msg: "User logged in successfully",
-  });
-}
+async function logoutController(req, res) {}
 
 module.exports = {
   registerController,

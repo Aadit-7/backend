@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const redis = require("../config/cashe");
 
 async function authUser(req, res, next) {
   const token = req.cookies.token;
@@ -6,6 +7,14 @@ async function authUser(req, res, next) {
   if (!token) {
     return res.status(400).json({
       msg: "Token is not provided",
+    });
+  }
+
+  const isTokenBlacklisted = await redis.get(token);
+
+  if (isTokenBlacklisted) {
+    return res.status(400).json({
+      msg: "Invalid Token",
     });
   }
 
