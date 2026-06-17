@@ -2,8 +2,8 @@ import { body, validationResult } from "express-validator";
 
 export function validate(req, res, next) {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).josn({ errors: errors.array() });
+  if (!error.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
   next();
 }
@@ -12,24 +12,24 @@ export const registerValidator = [
   body("username")
     .trim()
     .notEmpty()
-    .withMessage("Username should not be empty")
-    .isLength({ min: 3, max: 30 })
-    .withMessage("Username length should be between 3-30 characters")
+    .withMessage("username sholud not be empty")
     .matches(/^[a-zA-Z0-9_]+$/)
-    .withMessage("Username can only contains character numbers and underscore"),
+    .withMessage("Username must constains character, numbers and underscore")
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Username must be between 3-30 characters"),
 
   body("email")
     .trim()
     .notEmpty()
     .withMessage("Email should not be empty")
     .isEmail()
-    .withMessage("EMail should be valid"),
+    .withMessage("Please provide valid email"),
 
   body("password")
     .notEmpty()
-    .withMessage("")
-    .length({ min: 6 })
-    .withMessage(""),
+    .withMessage("Password should not be empty")
+    .isLength({ min: 6 })
+    .withMessage("Password must be atleast 6 characters "),
 
-  validate,``
+  validate,
 ];

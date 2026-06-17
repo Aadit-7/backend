@@ -6,5 +6,5 @@ const port = process.env.PORT || 8080;
 
 connectToDB();
 app.listen(port, () => {
-  console.log(`Server is running on the port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
