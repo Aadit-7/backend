@@ -2,6 +2,7 @@ import { body, validationResult } from "express-validator";
 
 export async function validate(req, res, next) {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
@@ -30,12 +31,12 @@ export const registerValidator = [
     .notEmpty()
     .withMessage("Password must not be empty")
     .isLength({ min: 6 })
-    .withMessage("Password length must be more than 6"),
+    .withMessage("Password length must be more than 6  "),
 
   validate,
 ];
 
-export const loginValidator = [
+export const loginValidators = [
   body("email")
     .trim()
     .notEmpty()

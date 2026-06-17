@@ -5,7 +5,7 @@ export async function registerController(req, res) {
   const { username, email, password } = req.body;
 
   const isAlreadyExists = await userModel.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ email }, { username }],
   });
 
   if (isAlreadyExists) {
@@ -18,8 +18,9 @@ export async function registerController(req, res) {
       err: "User already exists",
     });
   }
-  const user = await userModel.create({ username, email, password });
 
+  const user = await userModel.create({ username, email, password });
+  console.log(user);
   res.status(201).json({
     msg: "User registered successfully",
     success: true,
@@ -38,18 +39,18 @@ export async function loginController(req, res) {
 
   if (!user) {
     return res.status(400).json({
-      msg: "User dosen't exists with this email! Try different",
-      success: true,
+      msg: "User with this email dosen't exists! Try different",
+      success: false,
       err: "User dosen't exists",
     });
   }
 
-  const isPasswordMatch = await user.comparePassword(password);
+  const passwordMatch = await user.comparePassword(password);
 
-  if (!isPasswordMatch) {
+  if (!passwordMatch) {
     return res.status(400).json({
-      msg: "Password is wrong ! Try again",
-      success: true,
+      msg: "Password is wrong. Try again",
+      success: false,
       err: "Invalid Password",
     });
   }
@@ -78,18 +79,19 @@ export async function loginController(req, res) {
 
 export async function getMeController(req, res) {
   const userId = req.user.id;
+
   const user = await userModel.findOne({ _id: userId }).select("-password");
 
   if (!user) {
     return res.status(400).json({
-      msg: "User with this credential dosen't exists",
+      msg: "User with this credential dosen't exists! Try different",
       success: false,
-      err: "Invalid user",
+      err: "User dosen't exists",
     });
   }
 
   res.status(200).json({
-    message: "User fetched successfully",
+    msg: "User featched successfully",
     success: true,
     user,
   });

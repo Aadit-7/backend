@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  loginValidator,
+  loginValidators,
   registerValidator,
 } from "../validators/auth.validator.js";
 import {
@@ -8,14 +8,14 @@ import {
   loginController,
   registerController,
 } from "../controllers/auth.controller.js";
-import { authUserMiddleware } from "../middlewares/auth.middleware.js";
+import { authUser } from "../middlewares/auth.middleware.js";
 
 const authRouter = Router();
 
 authRouter.post("/register", registerValidator, registerController);
 
-authRouter.post("/login", loginValidator, loginController);
+authRouter.post("/login", loginValidators, loginController);
 
-authRouter.get("/get-me", authUserMiddleware, getMeController);
+authRouter.get("/get-me", authUser, getMeController);
 
 export default authRouter;
